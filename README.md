@@ -1,4 +1,4 @@
-# Python-Algorithm-Interview-soved-by-JAVA
+# Python-Algorithm-Interview-solved-by-JAVA
 박상길 개발자 님의 저서 "파이썬 알고리즘 인터뷰"를 자바 언어로 풀어봤습니다.
 
 코드는 바로 실행할 수 있는 형식은 아니고, 리트코드(leetcode) 사이트에서 요구하는
