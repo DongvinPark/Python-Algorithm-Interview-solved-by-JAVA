@@ -1,6 +1,6 @@
 //첫 번째 풀이입니다. 로그 스트링을 저장하는 새로운 타입을 정의해서 풀었습니다.
 //코드가 길고 복잡합니다.
-// 실행시간은 18밀리초, 상위 82%로 100명 중 82등 정도입니다.
+//실행시간은 18밀리초, 상위 82%로 100명 중 82등 정도입니다.
 public class Solution {
     public String[] reorderLogFiles(String[] logs) {
         List<Log> digits = new ArrayList<>();
