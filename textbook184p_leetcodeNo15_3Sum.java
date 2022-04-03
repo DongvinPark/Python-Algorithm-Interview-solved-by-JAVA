@@ -3,10 +3,11 @@
 //브루트 포스로 풀 경우 O(n^3)의 복잡도를 보이는 문제인데, 투포인터를 이용한 풀이를 통해 O(n^2)으로 최적화한 풀이입니다.
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        //반환 타입은 인테거 리스트를 요소로 하는 리스트다.
+      //return type is List< List<Integer> > .
         
         List<List<Integer>> answer = new ArrayList<>();
         
+      //입력값이 처음부터 잘못된 경우를 처리해 줍니다.
         if(nums.length<=2){return answer;}
         
         Arrays.sort(nums);//입력 배열을 오름차순으로 정렬해주면 훨씬 쉽게(그리고 빠르게) 답을 구할 수 있습니다.
@@ -29,7 +30,7 @@ class Solution {
                 //합이 0이 되는지 검사하지 않고 레프트와 라이트 인덱스에 대한 스킵처리를 먼저 할 경우, 입력배열이 {0,0,0,0}같이 동일한 숫자의 나열로 입력됐을 때 정답을 도출하지 못하고 while 루프를 탈출하는 오류를 범하게 됩니다.
                 int sum = nums[i] + nums[left] + nums[right];
 
-                if(sum<0){ left++; }//현재 판단을 위해서 사용하고 있는 입력배열을 오름차순으로 정렬된 배열이라는 것을 기억해야 합니다. 그렇기 때문에, 합이 0보다 작을 경우 레프트 인덱스를 +1 해줌으로써 합의 크기를 키우는 것이 필요합니다. 이 경우, 맨 밑이 else if 및 else 파트는 실행하기 않고 다시 while 루프의 처음으로 돌아갑니다.
+                if(sum<0){ left++; }//현재 판단을 위해서 사용하고 있는 입력배열을 오름차순으로 정렬된 배열이라는 것을 기억해야 합니다. 그렇기 때문에, 합이 0보다 작을 경우 레프트 인덱스를 +1 해줌으로써 합의 크기를 키우는 것이 필요합니다. 이 경우, 맨 밑의 else if 및 else 파트는 실행하지 않고 다시 while 루프의 처음으로 돌아갑니다.
                 else if(sum > 0){ right--; }//마찬가지로 합이 0보다 클 경우 라이트 인덱스를 -1 해줌으로써 합의 크기를 낮추는 것이 필요합니다. 이 경우에도, 맨 밑이 else if 및 else 파트는 실행하기 않고 다시 while 루프의 처음으로 돌아갑니다.
                 else{//합이 0인 경우를 찾았을 때입니다. 일단 합이 0이기 때문에 리스트에 추가한 후, answer 리스트에 추가해줍니다.
                     ArrayList<Integer> list = new ArrayList<>();
