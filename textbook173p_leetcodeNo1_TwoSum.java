@@ -79,7 +79,7 @@ class Solution {
         for(int i = 0; i < nums.length; i++){
             int val = nums[i];
             if( hm.containsKey(target-val) ){
-                return new int[]{searchMap.get(target-val), i};
+                return new int[]{hm.get(target-val), i};
             }//if
             hm.put(val, i);
         }//for
