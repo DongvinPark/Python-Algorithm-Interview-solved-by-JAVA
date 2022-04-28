@@ -138,7 +138,6 @@ class Solution {
         }//wh
 
         answer.add(start);
-        System.out.println("answer : " + answer);
     }//func
 
 }//main class
