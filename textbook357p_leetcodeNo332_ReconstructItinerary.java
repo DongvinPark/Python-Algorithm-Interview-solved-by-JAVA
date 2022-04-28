@@ -80,3 +80,113 @@ class Solution {
     }//func
 
 }//main class
+
+
+
+
+
+//두 번째 풀이는 dfs를 이용한 것은 동일하지만, 해시맵의 '값' 부분에 있는 각각의 리스트들에 대해서 '큐'연산을 적용하고 있다는 차이점이 있습니다.
+//실행시간은 10밀리초였고, 이는 상위 50% 정도의 성능입니다.
+class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        //retutn type is List<String>
+        List<String> answer = new ArrayList<>();
+
+        HashMap<String, ArrayList<String>> hm = new HashMap<>();
+
+        //첫 번째 풀이와 동일하게 출발점을 '키'로 하고, 각각의 출발점에서 도착 가능한 지점의 리스트를 '값'으로 하는 해시맵을 만든 후, 해시맵 내의 모든 '값'들에 대해서 사전순 정렬을 해 줍니다.
+        for(int i=0; i<tickets.size(); i++){
+            if(!hm.containsKey(tickets.get(i).get(0)) ){
+                hm.put(tickets.get(i).get(0), new ArrayList<String>());
+            }
+            hm.get(tickets.get(i).get(0)).add(tickets.get(i).get(1));
+        }//for
+        for(String s : hm.keySet()){
+            Collections.sort(hm.get(s));
+        }
+
+        //JFK를 출발점으로 삼아 dfs 호출을 시작합니다.
+        dfs(hm, "JFK", answer);
+
+        //여기서 왜 reverse로 순서를 뒤집어줘야 하는지에 대해서는 코드의 맨 아래부분의 설명을 참고하시길 바랍니다.
+        Collections.reverse(answer);
+
+        return answer;
+    }//main
+
+    public static void dfs(
+            HashMap<String, ArrayList<String>> hm,
+            String start,
+            List<String> answer
+    ){
+
+        //이 부분은 [출발-도착] 이라는 티켓들의 연결이 순환 구조를 가지지 않고 일방향으로 연결되다가 끊어지는 경우에 발생하는 NullPointerException을 방지하기 위한 처리입니다. 이 경우 마지막으로 호출된 dfs의 인자 중 start를 answer에 추가한 후, dfs호출을 즉시 종료해주면 됩니다.
+        if(hm.get(start)==null){
+            answer.add(start); return;
+        }
+
+        //정답을 도출해나가는 핵심은 이 부분입니다.
+        //이번에 호출된 dfs에서 start로 춟발점에 대한 정보를 받습니다. 그러면 앞서 만들어놓은 해시맵에서 출발점을 키로 갖고 있는 '값'을 가져올 수 있고, 이 '값'에는 해당 출발점에서 도착할 수 있는 다른 공항들의 리스트가 들어 있습니다. 사전순 방문이므로 리스트의 첫 번째 요소부터 방문해야 합니다.
+        //가능한 모든 대안을 살펴봐야 하므로 리스트의 요소가 없을 때까지 while 문을 반복해줍니다.
+        while(!hm.get(start).isEmpty()){
+
+            String next = hm.get(start).get(0);
+            hm.get(start).remove(0);
+
+            //while 문 내부에서 dfs가 다시 호출되는데, 이때는 이번 호출의 도착점을 새로운 출발점으로 삼아서 dfs 호출을 해줘야 합니다. 리스트에서 next에 해당하는 값은 삭제되므로, 한 번 방문하는 것에 사용된 티켓이 다시 사용되는 일은 없습니다.
+            dfs(hm, next, answer);
+        }//wh
+
+        answer.add(start);
+        System.out.println("answer : " + answer);
+    }//func
+
+}//main class
+
+/*
+* 이러한 dfs 호출 구조를 [[JFK, SFO], [JFK, ATL], [SFO, ATL], [ATL, JFK], [ATL, SFO]]이라는 입력에 대해서 실행해 보면 다음과 같은 실행과정을 거칩니다.
+* HashMap<String, <List>String > before dfs calls :
+	Key : ATL[JFK, SFO]
+	Key : SFO[ATL]
+	Key : JFK[ATL, SFO]
+
+	1st dfs called. parameter is : JFK
+		hm.get(JFK) elements before pop() : [ATL, SFO]
+		hm.get(JFK) elements after pop() : [SFO]
+		popped element : ATL
+
+	2nd dfs called. parameter is : ATL
+		hm.get(ATL) elements before pop() : [JFK, SFO]
+		hm.get(ATL) elements after pop() : [SFO]
+		popped element : JFK
+
+	3rd dfs called. parameter is : JFK
+		hm.get(JFK) elements before pop() : [SFO]
+		hm.get(JFK) elements after pop() : []
+		popped element : SFO
+
+	4th dfs called. parameter is : SFO
+		hm.get(SFO) elements before pop() : [ATL]
+		hm.get(SFO) elements after pop() : []
+		popped element : ATL
+
+	5th dfs called. parameter is : ATL
+		hm.get(ATL) elements before pop() : [SFO]
+		hm.get(ATL) elements after pop() : []
+		popped element : SFO
+
+	6th dfs called. parameter is : SFO
+
+answer : [SFO]
+answer : [SFO, ATL]
+answer : [SFO, ATL, SFO]
+answer : [SFO, ATL, SFO, JFK]
+answer : [SFO, ATL, SFO, JFK, ATL]
+answer : [SFO, ATL, SFO, JFK, ATL, JFK]
+
+Final Result : [JFK, ATL, JFK, SFO, ATL, SFO]
+
+* * dfs 호출이 while 문 내부에서 중첩되고, answer에 정답을 추가하는 것은 while 문 밖에 있습니다. 그렇기 때문에, dfs 6중첩이 끝날 때 까지 answer에 정답을 추가하는 것이 미뤄집니다.
+* dfs 6번째 호출이 끝나고나서야 6번째 호출의 answer.add()가 실행됩니다. 그후, 5,4,3,2,1 번째 호출의 answer.add()가 차례대로 실행됩니다.
+* answer.add()가 첫 번째 호출이 아닌 6번째 호출부터 실행되기 때문에, answer 리스트의 내용물들은 정답과 반대의 순서로 구성될 수밖에 없습니다. 따라서 모든 dfs 호출이 종료된 후, answer리스트의 순서를 Collections.reverse(answer);로 반대로 바꿔줘야 정답입니다.
+* */
