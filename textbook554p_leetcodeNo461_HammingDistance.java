@@ -32,7 +32,7 @@ class Solution {
 //그리고 이렇게 풀이하면 실행시간이 0밀리초로 측정되면서 더 빨리 풀이되는 것을 확인할 수 있습니다.
 class Solution {
     public int hammingDistance(int x, int y) {
-        //return type is int
+        //return type is int.
         
         return Integer.bitCount(x^y);
         
