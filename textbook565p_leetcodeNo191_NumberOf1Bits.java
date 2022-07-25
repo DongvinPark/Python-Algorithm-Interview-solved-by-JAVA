@@ -50,11 +50,11 @@ class Solution {
         int count = 0;
 
         while(n!=0){
-            System.out.println("\n\twhile entered");
-            System.out.println("n   : " + Integer.toBinaryString(n));
-            System.out.println("n-1 : " + Integer.toBinaryString(n-1));
+            //System.out.println("\n\twhile entered");
+            //System.out.println("n   : " + Integer.toBinaryString(n));
+            //System.out.println("n-1 : " + Integer.toBinaryString(n-1));
             n &= n-1;
-            System.out.println("result of AND operation : " + Integer.toBinaryString(n));
+            //System.out.println("result of AND operation : " + Integer.toBinaryString(n));
             count ++;
         }
 
