@@ -23,7 +23,8 @@ class Solution {
         for (Map.Entry<String, List<String>> entry : map.entrySet()) {
             Collections.sort(entry.getValue());
         }
-        //tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]] 이러한 입력이 들어왔다면, 다음과 같은 해시맵이 만들어집니다.
+        //tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]] 이러한 입력이 들어왔다면,
+	//다음과 같은 해시맵이 만들어집니다.
         // 키 :     JFK                   | SFO                   | ATL
         // 키별 값 :  > ATL > SFO          |   > ATL               |  > JFK > SFO
 
@@ -73,7 +74,8 @@ class Solution {
 
             //앞에서 삭제했었던 도착점을 다시 집어넣어 줍니다. 그래야 다음 for루프에서 온전한 해시맵을 넘겨줌으로써 정확한 작동이 가능해집니다.
             map.get(start).add(i, dest);
-            //curRes에서도 위와 같은 이유로 마지막 요소를 제거해 줘야 합니다. curRes는 예비 정답리스트와도 같은데, 현재 for루프에서 살펴봤던 경로를 다음 for루프에서도 중복으로 살펴보고 curRes에 추가해주는 일은 없어야 하기 때문입니다.
+            //curRes에서도 위와 같은 이유로 마지막 요소를 제거해 줘야 합니다. curRes는 예비 정답리스트와도 같은데, 현재 for루프에서 살펴봤던
+	    //경로를 다음 for루프에서도 중복으로 살펴보고 curRes에 추가해주는 일은 없어야 하기 때문입니다.
             curRes.remove(curRes.size() - 1);
         }//for
 
@@ -94,7 +96,8 @@ class Solution {
 
         HashMap<String, ArrayList<String>> hm = new HashMap<>();
 
-        //첫 번째 풀이와 동일하게 출발점을 '키'로 하고, 각각의 출발점에서 도착 가능한 지점의 리스트를 '값'으로 하는 해시맵을 만든 후, 해시맵 내의 모든 '값'들에 대해서 사전순 정렬을 해 줍니다.
+        //첫 번째 풀이와 동일하게 출발점을 '키'로 하고, 각각의 출발점에서 도착 가능한 지점의 리스트를 '값'으로 하는 해시맵을 만든 후,
+	//해시맵 내의 모든 '값'들에 대해서 사전순 정렬을 해 줍니다.
         for(int i=0; i<tickets.size(); i++){
             if(!hm.containsKey(tickets.get(i).get(0)) ){
                 hm.put(tickets.get(i).get(0), new ArrayList<String>());
@@ -120,20 +123,24 @@ class Solution {
             List<String> answer
     ){
 
-        //이 부분은 [출발-도착] 이라는 티켓들의 연결이 순환 구조를 가지지 않고 일방향으로 연결되다가 끊어지는 경우에 발생하는 NullPointerException을 방지하기 위한 처리입니다. 이 경우 마지막으로 호출된 dfs의 인자 중 start를 answer에 추가한 후, dfs호출을 즉시 종료해주면 됩니다.
+        //이 부분은 [출발-도착] 이라는 티켓들의 연결이 순환 구조를 가지지 않고 일방향으로 연결되다가 끊어지는 경우에 발생하는
+	//NullPointerException을 방지하기 위한 처리입니다. 이 경우 마지막으로 호출된 dfs의 인자 중 start를 answer에 추가한 후,
+	//dfs호출을 즉시 종료해주면 됩니다.
         if(hm.get(start)==null){
             answer.add(start); return;
         }
 
         //정답을 도출해나가는 핵심은 이 부분입니다.
-        //이번에 호출된 dfs에서 start로 춟발점에 대한 정보를 받습니다. 그러면 앞서 만들어놓은 해시맵에서 출발점을 키로 갖고 있는 '값'을 가져올 수 있고, 이 '값'에는 해당 출발점에서 도착할 수 있는 다른 공항들의 리스트가 들어 있습니다. 사전순 방문이므로 리스트의 첫 번째 요소부터 방문해야 합니다.
+        //이번에 호출된 dfs에서 start로 춟발점에 대한 정보를 받습니다. 그러면 앞서 만들어놓은 해시맵에서 출발점을 키로 갖고 있는 '값'을 가져올 수 있고,
+	// 이 '값'에는 해당 출발점에서 도착할 수 있는 다른 공항들의 리스트가 들어 있습니다. 사전순 방문이므로 리스트의 첫 번째 요소부터 방문해야 합니다.
         //가능한 모든 대안을 살펴봐야 하므로 리스트의 요소가 없을 때까지 while 문을 반복해줍니다.
         while(!hm.get(start).isEmpty()){
 
             String next = hm.get(start).get(0);
             hm.get(start).remove(0);
 
-            //while 문 내부에서 dfs가 다시 호출되는데, 이때는 이번 호출의 도착점을 새로운 출발점으로 삼아서 dfs 호출을 해줘야 합니다. 리스트에서 next에 해당하는 값은 삭제되므로, 한 번 방문하는 것에 사용된 티켓이 다시 사용되는 일은 없습니다.
+            //while 문 내부에서 dfs가 다시 호출되는데, 이때는 이번 호출의 도착점을 새로운 출발점으로 삼아서 dfs 호출을 해줘야 합니다. 리스트에서
+	    //next에 해당하는 값은 삭제되므로, 한 번 방문하는 것에 사용된 티켓이 다시 사용되는 일은 없습니다.
             dfs(hm, next, answer);
         }//wh
 
@@ -185,7 +192,9 @@ answer : [SFO, ATL, SFO, JFK, ATL, JFK]
 
 Final Result : [JFK, ATL, JFK, SFO, ATL, SFO]
 
-* * dfs 호출이 while 문 내부에서 중첩되고, answer에 정답을 추가하는 것은 while 문 밖에 있습니다. 그렇기 때문에, dfs 6중첩이 끝날 때 까지 answer에 정답을 추가하는 것이 미뤄집니다.
+* * dfs 호출이 while 문 내부에서 중첩되고, answer에 정답을 추가하는 것은 while 문 밖에 있습니다. 그렇기 때문에, dfs 6중첩이 끝날 때 까지
+* answer에 정답을 추가하는 것이 미뤄집니다.
 * dfs 6번째 호출이 끝나고나서야 6번째 호출의 answer.add()가 실행됩니다. 그후, 5,4,3,2,1 번째 호출의 answer.add()가 차례대로 실행됩니다.
-* answer.add()가 첫 번째 호출이 아닌 6번째 호출부터 실행되기 때문에, answer 리스트의 내용물들은 정답과 반대의 순서로 구성될 수밖에 없습니다. 따라서 모든 dfs 호출이 종료된 후, answer리스트의 순서를 Collections.reverse(answer);로 반대로 바꿔줘야 정답입니다.
+* answer.add()가 첫 번째 호출이 아닌 6번째 호출부터 실행되기 때문에, answer 리스트의 내용물들은 정답과 반대의 순서로 구성될 수밖에 없습니다.
+* 따라서 모든 dfs 호출이 종료된 후, answer리스트의 순서를 Collections.reverse(answer);로 반대로 바꿔줘야 정답입니다.
 * */
