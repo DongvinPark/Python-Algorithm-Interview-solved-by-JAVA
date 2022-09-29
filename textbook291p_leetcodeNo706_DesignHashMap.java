@@ -45,9 +45,11 @@ class MyHashMap {
         
         //저장하고자 하는 인덱스이 이미 다른 요소가 있는 경우입니다.
         //예를 들면, bucket에 put(1,1)을 하고, 다시 put(1001,2)이런 식의 상황이 된 것입니다.
-        //해시맵은 이미 존재하는 키값과 동일한 값으로 다시 put()메서드를 호출할 경우, 원래 있던 키, 값 쌍에서 '값' 부분을 새롭게 들어온 키,값 쌍의 값으로 변경(혹은 덮어쓰기)한다는 점입니다.
+        //해시맵은 이미 존재하는 키값과 동일한 값으로 다시 put()메서드를 호출할 경우, 원래 있던 키, 값 쌍에서
+        //'값' 부분을 새롭게 들어온 키,값 쌍의 값으로 변경(혹은 덮어쓰기)한다는 점입니다.
         //while 루프 내의 첫 번재 if 파트는 이를 처리하기 위한 부분입니다.
-        //while 루프 내의 두 번째 if 파트는 현재 firt노드가 현재 bucket 인덱스에 존재하는 연속된 노드들 중 마지막 노드에 해당될 때 while 루프를 빠져나오게 하기 위한 것입니다.
+        //while 루프 내의 두 번째 if 파트는 현재 firt노드가 현재 bucket 인덱스에 존재하는 연속된 노드들 중
+        //마지막 노드에 해당될 때 while 루프를 빠져나오게 하기 위한 것입니다.
         while(first!=null){
             if(first.key == key){ first.value = value; return; }
             if(first.next == null) break;
@@ -67,8 +69,11 @@ class MyHashMap {
         if(first == null) return -1;
 
         //get() 메서드의 while 루프를 작성할 때 주의해야 할 점이 있습니다.
-        //만약 여기서 첫 번째 loc에서 바로 값을 찾은 경우를 if(first.key == key){...} else{}이런 식으로 while 루프에서 따로 빼내서 처리할 경우 while 루프 내의 로직을 작성하기가 매우 까다로워집니다. else{...} 내부에 while루프를 집어넣고, 그 안에서 다시 chain 들을 탐색해야 하기 때문입니다.
-        //buckey.get(loc) 노드에서 바로 값을 찾을 수 있는 경우도 if로 while 루프 밖에 따로 빼내서 처리하는 것이 아니라, while 루프 내부에서 한 번에 처리하는 것이 코드도 간결하고 로직도 깔끔해집니다.
+        //만약 여기서 첫 번째 loc에서 바로 값을 찾은 경우를 if(first.key == key){...} else{}이런 식으로
+        //while 루프에서 따로 빼내서 처리할 경우 while 루프 내의 로직을 작성하기가 매우 까다로워집니다.
+        //else{...} 내부에 while루프를 집어넣고, 그 안에서 다시 chain 들을 탐색해야 하기 때문입니다.
+        //buckey.get(loc) 노드에서 바로 값을 찾을 수 있는 경우도 if로 while 루프 밖에 따로 빼내서 처리하는 것이 아니라,
+        //while 루프 내부에서 한 번에 처리하는 것이 코드도 간결하고 로직도 깔끔해집니다.
         while(first != null){
             if(first.key == key) return first.value;
             first = first.next;
@@ -91,8 +96,10 @@ class MyHashMap {
             return;
         }
         
-        //bucket의 loc 인덱스에 다수의 노드가 이미 chaining 돼 있을 경우에 원하는 키,값 쌍을 삭제하기 위해서는 chanin을 탐색해야 하고, 이때 prev노드가 필요합니다.
-        //여기에서도 remove 메서드에서 밝힌 것과 같이, 첫 시도만에 삭제해야 하는 키,값 쌍의 키를 찾아낸 경우도 while 루프 내에서 한번에 처리해야 합니다.
+        //bucket의 loc 인덱스에 다수의 노드가 이미 chaining 돼 있을 경우에 원하는 키,값 쌍을
+        //삭제하기 위해서는 chanin을 탐색해야 하고, 이때 prev노드가 필요합니다.
+        //여기에서도 remove 메서드에서 밝힌 것과 같이, 첫 시도만에 삭제해야 하는 키,값 쌍의 키를
+        //찾아낸 경우도 while 루프 내에서 한번에 처리해야 합니다.
         Node prev = first;
         while(first != null){
             if(first.key == key){
