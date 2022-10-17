@@ -73,7 +73,8 @@ class Solution {
         ListNode temp = head;
 
         //while 문의 조건문 부분이 temp가 아니라 temp.next라고 설정돼 있는 이유가 있습니다.
-        //이 부분이 temp.next 가 아니라 temp라고 설정해 놓을 경우, 해당 루프가 끝난 후의 temp 노드는 리스트의 마지막 노드가 아니라, 마지막 노드의 다음 노드 즉, Null을 가리키게 되기 때문입니다.
+        //이 부분이 temp.next 가 아니라 temp라고 설정해 놓을 경우, 해당 루프가 끝난 후의 temp 노드는 리스트의 마지막 노드가 아니라,
+        //마지막 노드의 다음 노드 즉, Null을 가리키게 되기 때문입니다.
         while(temp.next != null) { temp = temp.next; }
 
         //정답을 도출하기 위한 메서드에 입력 리스트의 첫 노드와 마지막 노드를 인자로 전달해주면서, 해당 메서드를 호출해줍니다.
@@ -87,7 +88,9 @@ class Solution {
     public ListNode merge(ListNode start1, ListNode start2){
 
         //루트 노드와 레스 노드를 따로 만들어 둔 후에 레스 노드가 루트노드를 가리키게 만드는 것이 중요합니다.
-        //이렇게 함으로써 루트노드가 앞으로 어떤 식으로 마구 변화하든지에 상관없이, 레스 노드는 항상 while 루프에 진입하기 전의 루트 노드가 가리키고 있던 곳을 일정하게 가리키게 할 수 있기 때문입니다. 이번 메서드 내에서 루트 노드는 결국 dummy Head 노드의 역할을 하게 되는 것입니다.
+        //이렇게 함으로써 루트노드가 앞으로 어떤 식으로 마구 변화하든지에 상관없이, 레스 노드는 항상 while 루프에
+        //진입하기 전의 루트 노드가 가리키고 있던 곳을 일정하게 가리키게 할 수 있기 때문입니다.
+        //이번 메서드 내에서 루트 노드는 결국 dummy Head 노드의 역할을 하게 되는 것입니다.
         ListNode root = new ListNode(0);
         ListNode res = root;
 
@@ -131,8 +134,10 @@ class Solution {
 
     // 슬로우 노드와 패스트 노드를 활용하여 슬로우 노드를 기준으로 리스트를 2 개로 나눠줍니다.
     //그 후 첫 리스트(startNode ~ slow 까지)와 두 번째 리스트(slow.next(==temp1) ~ endNode) 각각에 대해서 mergeSort()를 재귀호출 해줍니다.
-    //그 후, 위에서 정의했었던 merge()메서드를 호출해줍니다. 이때 merge() 메서드는 첫 번째 리스트의 첫 노드, 그리고 두 번째 리스트의 첫 노드 이렇게 2 개의 노드를 입력 인자로서 받습니다.
-    //mergeSort()는 후위 순회를 이용하고 있음을 알 수 있습니다. 재귀호출을 먼저 하고 나서야 이번 노드에서 처리해야 할 일(즉, merge()를 호출하는 것)을 처리하기 때문입니다.
+    //그 후, 위에서 정의했었던 merge()메서드를 호출해줍니다.
+    //이때 merge() 메서드는 첫 번째 리스트의 첫 노드, 그리고 두 번째 리스트의 첫 노드 이렇게 2 개의 노드를 입력 인자로서 받습니다.
+    //mergeSort()는 후위 순회를 이용하고 있음을 알 수 있습니다.
+    //재귀호출을 먼저 하고 나서야 이번 노드에서 처리해야 할 일(즉, merge()를 호출하는 것)을 처리하기 때문입니다.
     public ListNode mergeSort(ListNode startNode, ListNode endNode){
         if(startNode == null || startNode.next == null){return startNode;}
 
