@@ -160,3 +160,109 @@ class Solution {
     }//func--------------
 
 }//main class
+
+
+
+
+
+
+
+
+
+//병합정렬 로직을 이용한 풀이에서 분기점을 나눌 때 필요한 while 루프 탈출로직에 대한 추가설명.
+class Solution {
+    public ListNode sortList(ListNode head) {
+        //return type is ListNode
+        if(head == null || head.next == null) return head;
+
+        ListNode endNode = head;
+        while(true){
+            if(endNode.next == null) break;
+            endNode = endNode.next;
+        }
+
+        return mergeSort(head, endNode);
+
+    }//main
+
+    public ListNode merge(ListNode start1, ListNode start2){
+
+        ListNode node = new ListNode();
+        ListNode DH = node;
+
+        while(true){
+
+            if(start1!=null && start2!=null){
+                if(start1.val > start2.val){
+                    node.next = start2;
+                    start2 = start2.next;
+                }
+                else{
+                    node.next = start1;
+                    start1 = start1.next;
+                }
+            }
+            else if(start1==null && start2!=null){
+                node.next = start2;
+                start2 = start2.next;
+            }
+            else if(start1!=null && start2==null){
+                node.next = start1;
+                start1 = start1.next;
+            }
+            else if(start1==null && start2==null) break;
+            node = node.next;
+
+        }//wh
+
+        return DH.next;
+
+    }//func------------
+
+    public ListNode mergeSort(ListNode startNode, ListNode endNode){
+        if(startNode==null || startNode.next==null) return startNode;
+        
+        ListNode fast = startNode;
+        ListNode slow = startNode;
+
+        //분기점 노드를 만든다.
+        //여기가 매우 중요하다!! 특히, while루프 탈출 조건을 정확하게 써야 한다.
+        //fast==null 을 1번 조건, fast.next==null을 2번 조건, fast.next.next==null을
+        //3번 조건이라 하자.
+        /*
+        그러면, 들어오는 스타트 노드의 종류는 아래와 같이 유형화 할 수 있다.
+        a : 널
+        b : 1 > 널
+        c : 1 > 2 > 널
+        d : 1 > 2 > 3 > 널
+        e : 1 > 2 > 3 > 4 > 널
+        f : 1 > 2 > 3 > 4 > 5 > 널
+        a와 b의 경우 mergeSort 메서드의 시작부에 있는 if문에서 처리해주고 있다.
+        c의 경우가 문제다. 이 부분은 1번 조건과 2번 조건으로는 해결이 되지 않는다.
+        c의 경우가 분기가 제대로 이루어지기 위해서는 slow노드가 1을 가리키고 있는 상태에서
+        루프가 바로 브레이크 돼야 하는데, 3번 조건이 없이는 while루프가 시작이 되면서 slow노드가
+        1번 이동을 하게 되면서 2를 가리키게 되기 때문이다. 이 경우 병합정렬을 위한 정상적인 분기가
+        이루어지지 않게 되면서 mergeSort()메서드는 무한루프에 빠지고 만다.
+        d,e,f의 경우는 1번 및 2번 조건으로 정상적인 분기가 가능하지만, c의 경우 때문에 정상적인 분기가
+        되지 않기 때문에 결론적으로 3번 조건이 필요하게 되는 것이다.
+        */
+        while(true){
+            if(fast==null || fast.next==null || fast.next.next==null) break;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //리스트를 나누고, 각각에 대해서 머지소트 호출.
+        ListNode secondStart = slow.next;
+        slow.next = null;
+        endNode.next = null;
+
+        ListNode head1 = mergeSort(startNode, slow);
+        ListNode head2 = mergeSort(secondStart, endNode);
+
+        //병합시키기.
+        ListNode resultNode = merge(head1, head2);
+        return resultNode;
+    }//func--------------
+
+}//main class
